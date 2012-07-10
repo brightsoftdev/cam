@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Cam : A “keep it simple, stupid” approach to handling photo and video capture with AVFoundation." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Cam</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/thisandagain/cam">View on GitHub</a>
+
+          <h1 id="project_title">Cam</h1>
+          <h2 id="project_tagline">A “keep it simple, stupid” approach to handling photo and video capture with AVFoundation.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/thisandagain/cam/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/thisandagain/cam/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>DIYCam is a high-level layer built on top of AVFoundation that enables simple setup and implementation of photo and video capture within iOS. It is pretty darn opinionated though... if you are looking for lots of configuration options then this is probably not the best way to go. If you are looking for something simple but hopefully not "too" simple then read on:</p>
+
+<h2>Getting Started</h2>
+
+<p>The fastest way to get started with DIYCam is to look through the included "Example" project, but the setup and use is designed to be really minimal.</p>
+
+<div class="highlight">
+<pre><span class="c1">// Init camera</span>
+<span class="n">cam</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DIYCam</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+<span class="p">[[</span><span class="n">self</span> <span class="n">cam</span><span class="p">]</span> <span class="nl">setDelegate:</span><span class="n">self</span><span class="p">];</span>
+<span class="p">[[</span><span class="n">self</span> <span class="n">cam</span><span class="p">]</span> <span class="n">setup</span><span class="p">];</span>
+
+<span class="c1">// Preview</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">preview</span><span class="p">.</span><span class="n">frame</span>       <span class="o">=</span> <span class="n">display</span><span class="p">.</span><span class="n">frame</span><span class="p">;</span>
+<span class="p">[</span><span class="n">display</span><span class="p">.</span><span class="n">layer</span> <span class="nl">addSublayer:</span><span class="n">cam</span><span class="p">.</span><span class="n">preview</span><span class="p">];</span>
+
+<span class="n">CGRect</span> <span class="n">bounds</span>           <span class="o">=</span> <span class="n">display</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">preview</span><span class="p">.</span><span class="n">bounds</span>      <span class="o">=</span> <span class="n">bounds</span><span class="p">;</span>
+<span class="n">cam</span><span class="p">.</span><span class="n">preview</span><span class="p">.</span><span class="n">position</span>    <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">CGRectGetMidX</span><span class="p">(</span><span class="n">bounds</span><span class="p">),</span> <span class="n">CGRectGetMidY</span><span class="p">(</span><span class="n">bounds</span><span class="p">));</span>
+</pre>
+</div>
+
+
+<h2>Required Frameworks</h2>
+
+<pre><code>AssetsLibrary.framework
+AVFoundation.framework
+CoreGraphics.framework
+CoreMedia.framework
+MobileCoreServices.framework
+QuartzCore.framework
+</code></pre>
+
+<h2>Configuration</h2>
+
+<p>Default configuration settings can be modified within DIYCamDefaults.h where options for asset library use, orientation, device settings, and quality can be modified.</p>
+
+<h2>Methods</h2>
+
+<div class="highlight">
+<pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setup</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">startPhotoCapture</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">startVideoCapture</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">stopVideoCapture</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">createAssetFilePath:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">extension</span><span class="p">;</span>
+</pre>
+</div>
+
+
+<h2>Delegate Methods</h2>
+
+<div class="highlight">
+<pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">camReady:</span><span class="p">(</span><span class="n">DIYCam</span> <span class="o">*</span><span class="p">)</span><span class="nv">cam</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">camDidFail:</span><span class="p">(</span><span class="n">DIYCam</span> <span class="o">*</span><span class="p">)</span><span class="nv">cam</span> <span class="nf">withError:</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">camCaptureStarted:</span><span class="p">(</span><span class="n">DIYCam</span> <span class="o">*</span><span class="p">)</span><span class="nv">cam</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">camCaptureStopped:</span><span class="p">(</span><span class="n">DIYCam</span> <span class="o">*</span><span class="p">)</span><span class="nv">cam</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">camCaptureProcessing:</span><span class="p">(</span><span class="n">DIYCam</span> <span class="o">*</span><span class="p">)</span><span class="nv">cam</span><span class="p">;</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">camCaptureComplete:</span><span class="p">(</span><span class="n">DIYCam</span> <span class="o">*</span><span class="p">)</span><span class="nv">cam</span> <span class="nf">withAsset:</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">asset</span><span class="p">;</span>
+</pre>
+</div>
+
+
+<h2>Properties</h2>
+
+<div class="highlight">
+<pre><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">)</span> <span class="kt">id</span> <span class="o">&lt;</span><span class="n">DIYCamDelegate</span><span class="o">&gt;</span> <span class="n">delegate</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">retain</span><span class="p">)</span> <span class="n">AVCaptureSession</span> <span class="o">*</span><span class="n">session</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">)</span> <span class="n">AVCaptureVideoPreviewLayer</span> <span class="o">*</span><span class="n">preview</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">assign</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">isRecording</span><span class="p">;</span>
+</pre>
+</div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Cam maintained by <a href="https://github.com/thisandagain">thisandagain</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33281153-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
